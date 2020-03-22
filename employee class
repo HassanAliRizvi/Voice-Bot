@@ -1,0 +1,8 @@
+# employee class
+class Employees:
+
+    def __init__(self, employee_id, first, last, pay):
+        self.employee_id = employee_id
+        self.first = first
+        self.last = last
+        self.pay = pay
