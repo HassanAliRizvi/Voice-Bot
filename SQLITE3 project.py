@@ -1,4 +1,4 @@
-# importing voice, random, and sqlite3
+
 import speech_recognition as sr
 from gtts import gTTS
 import playsound
@@ -43,7 +43,7 @@ def get_audio():
 speak_text('welcome to my SQLITE project that stores employee information into a database.')
 speak_text('you can enter the data manually or use the voice bot')
 
-# ------------------------------------------------------------------
+
 
 
 conn = sqlite3.connect(':memory:')
@@ -234,16 +234,8 @@ def select_program():
         select_program()
 
 
-# --------------------------------------------------------------------
-
-# using voice to enter or delete employee from the database
-
-
-# -------------------------------------------------------------------------
 conn.commit()
 
-
-# a function to loop the program if the user wants to add, delete or update
 
 
 def loop_commands_function():
