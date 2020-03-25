@@ -6,11 +6,13 @@ import random
 from employee import Employees
 import sqlite3
 import os
-
-""" VOICE CODE """
+import re
 
 
 def speak_text(speak):
+    """
+     This function makes the voice bot speak a specific command.
+    """
     rand = random.randint(1, 10000)
     filename = 'file' + str(rand) + '.mp3'
     tts = gTTS(text=speak, lang='en')
@@ -20,6 +22,11 @@ def speak_text(speak):
 
 
 def get_audio():
+    """
+
+    This function takes input from the user through the microphone and returns an exception if the command is not understood by the voice bot
+
+    """
     r = sr.Recognizer()
     with sr.Microphone() as source:
         audio = r.listen(source)
@@ -33,40 +40,17 @@ def get_audio():
     return said
 
 
-# speak_text('Please enter an ID for the employee:')
-#  id_name = input('Please enter an ID for the employee:')
-
-def select_program():
-    select = input(
-        'Type in voice bot to use the \"voice bot\" to enter your employee data or type in \"manual\" to enter the data manually : ')
-    if select == 'voice bot' or select == ' voice bot':
-        voice_commands()
-        # the voice commands function
-    elif select == 'manual' or select == ' manual':
-        manual_commands()
-    else:
-        select_program()
-    # the manual commands function
-
-
-speak_text('Please enter the first name of the employee:')
-first_name = input('Please enter the first name of the employee:')
-
-speak_text('Please enter the last name of the employee:')
-last_name = input('Please enter the last name of the employee:')
-
-speak_text('Please enter the pay of the employee:')
-pay_emp = input('Please enter the pay of the employee:')
-
-user_emp = Employees(id, first_name, last_name, pay_emp)
+speak_text('welcome to my SQLITE project that stores employee information into a database.')
+speak_text('you can enter the data manually or use the voice bot')
 
 # ------------------------------------------------------------------
 
-""" USING SQLITE3 TO STORE EMPLOYEE NAMES AND PAY INTO DATABASE """
 
 conn = sqlite3.connect(':memory:')
 
 c = conn.cursor()
+
+'''  Create a table called 'employees'  using SQLITE3 to store data'''
 
 c.execute(""" CREATE TABLE employees (
               employee_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -78,12 +62,12 @@ c.execute(""" CREATE TABLE employees (
 conn.commit()
 
 
-# TO SAVE CHANGES, DROP TABLE THEN CREATE TABLE AGAIN
+def insert_emp(emp):
+    """
 
-# inserting an employee into the database
+     This function inserts the employee data into the table
 
-
-def insert_emp(emp):  # inserts the employee name
+    """
     with conn:
         c.execute(""" INSERT INTO employees VALUES (?,?,?,?) """, (None, emp.first, emp.last, emp.pay))
 
@@ -92,7 +76,12 @@ conn.commit()
 
 
 # delete employees from the database
-def delete_emp(id_emp):  # deletes the employee # set that equal to the user input
+def delete_emp(id_emp):
+    """
+
+    This function deletes the employee from the data
+
+    """
     with conn:
         c.execute(""" DELETE FROM employees WHERE employee_id = :employee_id""",
                   {'employee_id': id_emp})
@@ -101,8 +90,13 @@ def delete_emp(id_emp):  # deletes the employee # set that equal to the user inp
 conn.commit()
 
 
-# get all employees from the database
 def get_employees():  # gets all employee names
+    """
+
+    This function prints out all the employees in the data
+
+
+    """
     c.execute(""" SELECT * FROM employees """)
     return c.fetchall()
 
@@ -110,53 +104,61 @@ def get_employees():  # gets all employee names
 conn.commit()
 
 
-# commands for inserting or deleting to the database
 
 def manual_commands():
-    print('Write insert to insert the employee into the data')
-    print('Write delete to delete the employee from the data')
-    print('Write get data to get the information of all employees')
+    """
 
-    command = input('Insert, Delete, or Get employees?...')
+    This function is executed when the user decides to edit the data manually. The if-elif-else statements are used to update, delete or get employees
 
-    while command == 'Insert' or command == 'Delete' or command == 'Get employees':
-        if command == 'Insert' or command == ' Insert':
-            insert_emp(user_emp)
-            speak_text(' employee successfully added')
-            speak_text('Here are the employees up until now ')
-            print('Here are the employees up until now ' + '\n' + str(get_employees()))
-            loop_commands_function()
+    """
 
-        elif command == 'Delete' or command == ' Delete':
-            delete_employee = input(
-                "Which employee do you want me to delete. Please select the id of the employee from the data below: " + '\n' + str(
-                    get_employees()))
-            delete_emp(delete_employee)
-            speak_text('successfully deleted')
-            speak_text('Here are the employees up until now ')
-            print('Here are the employees up until now' + '\n' + str(get_employees()))
-            loop_commands_function()
+    print('Write \"update\" to add another employee into the data')
+    print('Write \"delete\" to delete an employee from the data')
 
-        elif command == 'Get employees' or command == ' Get employees':
-            speak_text('Here are all the employees')
-            print(str(get_employees()))
-            loop_commands_function()
+    command = input('\n update or delete?...')
+
+    if command == 'update' or command == ' update':
+        employee_info()
+        speak_text('Here are the employees up until now ')
+        print('Here are the employees up until now ' + '\n' + str(get_employees()))
+        loop_commands_function()
+
+    elif command == 'delete' or command == ' delete':
+        print("Which employee do you want me to delete. Please select the id of the employee from the data below: " + '\n' + str(get_employees()))
+        delete_employee = input()
+        delete_emp(delete_employee)
+        speak_text('successfully deleted')
+        speak_text('Here are the employees up until now ')
+        print('\nHere are the employees up until now' + '\n' + str(get_employees()))
+        loop_commands_function()
+
+    elif command == 'Get employees' or command == ' Get employees':
+        speak_text('Here are all the employees')
+        print(str(get_employees()))
+        loop_commands_function()
     else:
         print('\n' + 'Please say from one of the following commands')
         print('\n' + manual_commands())
 
 
 def voice_commands():
-    speak_text('\n Say insert to insert the employee into the data....')
+    """
+
+    This function uses the voice bot to insert, delete, or get employees from the data. Similar to the manual_commands() function, but it just uses voice.
+
+    """
+    speak_text('\nSay update to insert another employee into the data....')
     speak_text('Say delete to delete the employee from the data....')
-    speak_text('Say get data to get the information of all employees...')
-    print('Say insert to insert the employee into the data')
+    speak_text('Say get employees to get the information of all employees...')
+
+    print('\nSay update to insert the employee into the data')
     print('Say delete to delete the employee from the data')
-    print('Say get data to get the information of all employees')
+    print('Say get employees to get the information of all employees')
+
     text = get_audio()
-    if text == 'insert':
-        insert_emp(user_emp)
-        speak_text(' employee successfully added')
+
+    if text == 'update':
+        employee_info()
         speak_text('Here are the employees up until now ')
         print('Here are the employees up until now ' + '\n' + str(get_employees()))
         loop_commands_function()
@@ -166,7 +168,7 @@ def voice_commands():
             "Which employee do you want me to delete. Please select the id of the employee from the data below: " + '\n' + str(
                 get_employees()))
         delete_emp(delete_employee)
-        speak_text('successfully deleted')
+        speak_text('employee successfully deleted')
         speak_text('Here are the employees up until now ')
         print('Here are the employees up until now' + '\n' + str(get_employees()))
         loop_commands_function()
@@ -182,6 +184,56 @@ def voice_commands():
 
 
 conn.commit()
+
+
+def employee_info():
+    """
+    This function takes in the first name, last name, and pay of the employee. Returns false if the input is not valid
+    
+    """
+    while True:
+        speak_text('please enter the first name of the employee')
+        print('Please enter the first name of the employee:-')
+        first_name = input()
+        if re.findall('[a-z]', first_name):
+            break
+
+    while True:
+        speak_text('please enter the last name of the employee')
+        print('Please enter the last name of the employee:-')
+        last_name = input()
+        if re.findall('[a-z]', last_name):
+            break
+
+    while True:
+        speak_text('please enter the pay of the employee')
+        print('Please enter the pay of the employee:-')
+        pay_emp = input()
+        if re.findall("\d", pay_emp):
+            break
+
+    user_emp = Employees(first_name, last_name, pay_emp)
+
+    return insert_emp(user_emp)
+
+    speak_text('employee was successfully added to the database')
+
+
+def select_program():
+    """
+    This function makes the user select from writing manual commands to edit the employee data or use the voice bot
+
+    """
+    select = input(
+        'Type in voice bot to use the \"voice bot\" to enter your employee data or type in \"manual\" to enter the data manually : ')
+    if select == 'voice bot' or select == ' voice bot':
+        voice_commands()
+    elif select == 'manual' or select == ' manual':
+        manual_commands()
+    else:
+        select_program()
+
+
 # --------------------------------------------------------------------
 
 # using voice to enter or delete employee from the database
@@ -192,26 +244,27 @@ conn.commit()
 
 
 # a function to loop the program if the user wants to add, delete or update
+
+
 def loop_commands_function():
+    """
+
+    This function asks the user if he/she wants to continue with the program
+
+
+    """
     cont = input('Do you want me to continue? Write Yes or No')
-    while cont == 'Yes' or cont == 'No':
-        if cont == 'Yes' or cont == ' Yes':
-            select_program()
-        elif cont == 'No' or cont == ' No':
-            break
+    if cont == 'Yes' or cont == ' Yes':
+        employee_info()
+    elif cont == 'No' or cont == ' No':
+        speak_text('thank you for your time')
+        speak_text('goodbye now')
+        exit()
     else:
         speak_text('please type in yes or no')
         print('Please type in Yes or No!')
 
 
+employee_info()
 select_program()
 
-# ----------------------- TO DO!!!----------------------------
-# THE LEAST TO DO... MAKE COLUMNS SO THAT THEY CAN BE DISTINGUISHED! E.G: IT SHOULD SAY FIRST NAME, LAST NAME , AND PAY
-# --------------------------------------------------------------------DONE TO DO's-------------------------------------
-# 1. TO DO : NEED TO ADD EMPLOYEES INTO THE DATABASE CONTINOUSLY! NO ERRORS THAT EMPLOYEE TABLE ALREADY EXISTS
-# 2. How can I auto-increment the id?
-# 3. Options should be available as to which employee to delete
-# Write separate commands for manual and voice!
-# use while loop if the statement is not equal to insert, delete, or get employees like the one
-# Voice is not working because the input variable is coming in between
