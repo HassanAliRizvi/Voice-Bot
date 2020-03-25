@@ -1,8 +1,7 @@
 # employee class
 class Employees:
 
-    def __init__(self, employee_id, first, last, pay):
-        self.employee_id = employee_id
+    def __init__(self, first, last, pay):
         self.first = first
         self.last = last
         self.pay = pay
