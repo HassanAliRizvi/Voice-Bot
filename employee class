@@ -1,5 +1,11 @@
-# employee class
+
 class Employees:
+
+"""
+The Employees class is imported to the SQLITE3 project. It stores in first name, last name, and pay as attributes
+
+"""
+
 
     def __init__(self, first, last, pay):
         self.first = first
