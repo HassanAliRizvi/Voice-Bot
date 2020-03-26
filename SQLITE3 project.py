@@ -12,6 +12,8 @@ import re
 def speak_text(speak):
     """
      This function makes the voice bot speak a specific command.
+
+     THIS IS A CHANGE FOR GIT
     """
     rand = random.randint(1, 10000)
     filename = 'file' + str(rand) + '.mp3'
