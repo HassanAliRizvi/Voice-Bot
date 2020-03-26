@@ -1,60 +1,43 @@
-# SQLITE3 PROJECT THAT STORES ESSENTIAL EMPLOYEE INFORMATION
+# SQLITE3 PROJECT- STORING EMPLOYEE INFORMATION
+
+A simple SQLITE3 project using python that stores employee information. Users can type the information manually or use the voice bot
+
 
 ## Table of contents
+* [General info](#general-info)
+* [Technologies](#technologies)
+* [Features](#features)
+* [Setup](#setup)
+* [Usage](#usage)
 
+## General info
+The project is a simple database storing essential employee information, for example, first name, last name, and pay. You can type in the employee information manually or use the voice-bot.
 
-Welcome to my SQLITE3 project that stores employee information. Users can either manually type in the information or use the voice bot to either insert or delete the employee or get employees from the data. 
+## Technologies
+Project is created with:
 
-## VOICE COMMANDS
+ - Python 3.8
+ - ### Python 3.8 Libraries
+	 - SQLITE3
+	 - speech_recognition 
+	 - gtts
+	 - playsound
+	 - os
+	 - re
+	 - random
+ - ### Class
+	 - imported Employee class from employees.py to store an employee's first name, last name, and pay
+	 - 
+## Features
+ - Adding an employees
+ - Deleting an employee
+ - Get information of all employees
+ - Use a voice bot to add employees, delete employees, or get employees from the data
+### TO DO:
+ - Check if user entered an id already present in the database if the user tries to delete an employee for valid ID.
 
-### Modules to import for the voice bot
-	import speech_recognition as sr  
-	from gtts import gTTS  
-	import playsound  
-	import random  
+## Setup
+Do a simple clone of the project through the `git clone` command and save it to the directory you want through the command line.
 
-### The speak_text() function makes the voice bot talk using the playsound and gTTS module while the get_audio() function takes in input from the user for a specific command.
-
-	def speak_text(speak):
-	    """
-	     This function makes the voice bot speak a specific command.
-	    """
-	    rand = random.randint(1, 10000)
-	    filename = 'file' + str(rand) + '.mp3'
-	    tts = gTTS(text=speak, lang='en')
-	    tts.save(filename)
-	    playsound.playsound(filename)
-	    os.remove(filename)
-
-
-	def get_audio():
-	    """
-
-	    This function takes input from the user through the microphone and returns an exception if the command is not understood by the voice bot
-
-	    """
-	    r = sr.Recognizer()
-	    with sr.Microphone() as source:
-		audio = r.listen(source)
-		said = ''
-
-		try:
-		    said = r.recognize_google(audio)
-		    print(said)
-		except Exception as e:
-		    print('Exception' + str(e))
-	    return said
-
-
-	speak_text('welcome to my SQLITE project that stores employee information into a database.')
-	speak_text('you can enter the data manually or use the voice bot')
-
-
-# CREATING THE DATABASE
-
-# Modules for the database
-	from employee import Employees  
-	import sqlite3 
-	import os  
-	import re
-	 
+## Usage
+After you clone the repository, you may go the directory where you saved the file and open the code in your text editor. 
