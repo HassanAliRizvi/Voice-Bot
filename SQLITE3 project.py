@@ -46,13 +46,13 @@ speak_text('you can enter the data manually or use the voice bot')
 # ------------------------------------------------------------------
 
 
-conn = sqlite3.connect(':memory:')
+conn = sqlite3.connect('employee.db')
 
 c = conn.cursor()
 
 '''  Create a table called 'employees'  using SQLITE3 to store data'''
 
-c.execute(""" CREATE TABLE employees (
+c.execute(""" CREATE TABLE IF NOT EXISTS employees (
               employee_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
               first TEXT,
               last TEXT,
