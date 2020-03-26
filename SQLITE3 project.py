@@ -8,12 +8,13 @@ import sqlite3
 import os
 import re
 
-#--------------------------------------------------------------------
+
+# --------------------------------------------------------------------
 def speak_text(speak):
     """
      This function makes the voice bot speak a specific command.
 
-     THIS IS A CHANGE FOR GIT
+
     """
     rand = random.randint(1, 10000)
     filename = 'file' + str(rand) + '.mp3'
@@ -22,7 +23,8 @@ def speak_text(speak):
     playsound.playsound(filename)
     os.remove(filename)
 
-#----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
 def get_audio():
     """
 
@@ -63,7 +65,8 @@ c.execute(""" CREATE TABLE IF NOT EXISTS employees (
 
 conn.commit()
 
-#------------------------------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------------------------------
 def insert_emp(emp):
     """
 
@@ -75,7 +78,9 @@ def insert_emp(emp):
 
 
 conn.commit()
-#-----------------------------------------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------------------------------------
 
 def delete_emp(id_emp):
     """
@@ -90,8 +95,8 @@ def delete_emp(id_emp):
 
 conn.commit()
 
-#-----------------------------------------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------------------------------------
 
 
 def get_employees():  # gets all employee names
@@ -107,8 +112,8 @@ def get_employees():  # gets all employee names
 
 conn.commit()
 
-#-----------------------------------------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------------------------------------
 
 
 def manual_commands():
@@ -130,7 +135,9 @@ def manual_commands():
         loop_commands_function()
 
     elif command == 'delete' or command == ' delete':
-        print("Which employee do you want me to delete. Please select the id of the employee from the data below: " + '\n' + str(get_employees()))
+        print(
+            "Which employee do you want me to delete. Please select the id of the employee from the data below: " + '\n' + str(
+                get_employees()))
         delete_employee = input()
         delete_emp(delete_employee)
         speak_text('successfully deleted')
@@ -146,9 +153,10 @@ def manual_commands():
         print('\n' + 'Please say from one of the following commands')
         print('\n' + manual_commands())
 
-#-----------------------------------------------------------------------------------------------------------
 
-        
+# -----------------------------------------------------------------------------------------------------------
+
+
 def voice_commands():
     """
 
@@ -172,7 +180,9 @@ def voice_commands():
         loop_commands_function()
 
     elif text == 'delete':
-        print("Which employee do you want me to delete. Please select the id of the employee from the data below: " + '\n' +str(get_employees()))
+        print(
+            "Which employee do you want me to delete. Please select the id of the employee from the data below: " + '\n' + str(
+                get_employees()))
         delete_employee = input()
         delete_emp(delete_employee)
         speak_text('employee successfully deleted')
@@ -192,8 +202,10 @@ def voice_commands():
 
 conn.commit()
 
-#-----------------------------------------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------- new commit ....
 
 def employee_info():
     while True:
@@ -223,7 +235,8 @@ def employee_info():
 
     return insert_emp(user_emp)
 
-#-----------------------------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------------------------
 
 
 def select_program():
@@ -231,7 +244,8 @@ def select_program():
     This function makes the user select from writing manual commands to edit the employee data or use the voice bot
 
     """
-    print('Type in voice bot to use the \"voice bot\" to enter your employee data or type in \"manual\" to enter the data manually :- ')
+    print(
+        'Type in voice bot to use the \"voice bot\" to enter your employee data or type in \"manual\" to enter the data manually :- ')
     select = input()
     if select == 'voice bot' or select == ' voice bot':
         voice_commands()
@@ -239,15 +253,12 @@ def select_program():
         manual_commands()
     else:
         select_program()
-        
-        
-    
+
+
 conn.commit()
 
-#-----------------------------------------------------------------------------------------------------------
 
-
-
+# -----------------------------------------------------------------------------------------------------------
 
 
 def loop_commands_function():
@@ -273,4 +284,4 @@ def loop_commands_function():
 employee_info()
 select_program()
 
-#-----------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------
