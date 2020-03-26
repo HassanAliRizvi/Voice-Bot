@@ -1,4 +1,7 @@
-# SQLITE3 PROJECT THAT STORES EMPLOYEE INFORMATION
+# SQLITE3 PROJECT THAT STORES ESSENTIAL EMPLOYEE INFORMATION
+
+## Table of contents
+
 
 Welcome to my SQLITE3 project that stores employee information. Users can either manually type in the information or use the voice bot to either insert or delete the employee or get employees from the data. 
 
